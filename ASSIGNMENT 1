@@ -1,0 +1,65 @@
+import java.util.Scanner;
+// Book class
+class Book {
+    String title;
+    String author;
+    String isbn;
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+     public void displayBook() {
+    System.out.println("Title: " + title + ", Author: " + author + ", ISBN: " + isbn);
+    }
+}	
+// Library class
+class Library {
+    Book[] books;   // array to store books
+    int count;
+    public Library(int size) {
+        books = new Book[size];
+        count = 0;
+    }
+    // Add book using user input
+    public void addBook(String title, String author, String isbn) {
+        if (count < books.length) {
+            books[count] = new Book(title, author, isbn);
+            count++;
+        } else {
+            System.out.println("Library is full! Cannot add more books.");
+        }
+    }
+    public void displayBooks() {
+        System.out.println("\nBooks in the Library:");
+        for (int i = 0; i < count; i++) {
+            books[i].displayBook();
+        }
+    }
+}
+// Main class
+public class Assignment1 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        // Create library with capacity of 5 books
+        Library library = new Library(5);
+        // Input number of books
+        System.out.print("How many books do you want to add? ");
+        int n = sc.nextInt();
+        sc.nextLine();  // consume newline
+        // Get book details from user
+        for (int i = 0; i < n; i++) {
+            System.out.println("\nEnter details of Book " + (i + 1));
+            System.out.print("Title: ");
+            String title = sc.nextLine();
+            System.out.print("Author: ");
+            String author = sc.nextLine();
+            System.out.print("ISBN: ");
+            String isbn = sc.nextLine();
+            library.addBook(title, author, isbn);
+        }
+        // Display all books
+        library.displayBooks();
+    }
+}
