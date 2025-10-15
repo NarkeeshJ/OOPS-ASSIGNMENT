@@ -1,0 +1,35 @@
+import java.util.Base64;
+
+class JWTUtil {
+    // Generate a fake token
+    static String generateToken(String username) {
+        return Base64.getEncoder().encodeToString((username + "_token").getBytes());
+    }
+
+    // Validate the token
+    static boolean validateToken(String token, String username) {
+        String expected = generateToken(username);
+        return expected.equals(token);
+    }
+}
+
+public class SimpleJWT {
+    public static void main(String[] args) {
+        String username = "nix";
+        String password = "1234";
+
+        // Step 1: Login
+        if (password.equals("1234")) {
+            String token = JWTUtil.generateToken(username);
+            System.out.println("Login successful! Token: " + token);
+
+            // Step 2: Access protected API
+            if (JWTUtil.validateToken(token, username))
+                System.out.println("✅ Access granted! Protected data shown.");
+            else
+                System.out.println("❌ Access denied!");
+        } else {
+            System.out.println("Invalid credentials!");
+        }
+    }
+}
