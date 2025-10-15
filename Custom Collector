@@ -1,0 +1,43 @@
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.*;
+
+public class CustomCollectorExample {
+
+    // Custom Collector to calculate average
+    static class AverageCollector implements Collector<Integer, int[], Double> {
+
+        public Supplier<int[]> supplier() {
+            // array[0] = sum, array[1] = count
+            return () -> new int[2];
+        }
+
+        public BiConsumer<int[], Integer> accumulator() {
+            return (a, t) -> {
+                a[0] += t; // sum
+                a[1]++;    // count
+            };
+        }
+
+        public BinaryOperator<int[]> combiner() {
+            return (a, b) -> {
+                a[0] += b[0];
+                a[1] += b[1];
+                return a;
+            };
+        }
+
+        public Function<int[], Double> finisher() {
+            return a -> (a[1] == 0) ? 0.0 : (double) a[0] / a[1];
+        }
+
+        public Set<Characteristics> characteristics() {
+            return Collections.emptySet();
+        }
+    }
+    public static void main(String[] args){
+        List<Integer> numbers = Arrays.asList(10, 20, 30, 40, 50);
+        double avg = numbers.stream().collect(new AverageCollector());
+        System.out.println("Average:"+avg);
+}
+}
